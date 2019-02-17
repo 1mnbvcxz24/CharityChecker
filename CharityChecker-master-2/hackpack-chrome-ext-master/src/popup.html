@@ -1,0 +1,87 @@
+<!--
+File: popup.html
+=========================
+This file contains the HTML visible in the browser action,
+which is the window that pops up when you click the icon
+in the upper right corner of the Chrome window. Update this
+HTML file to change the layout of the content if you'd like!
+Currently, it is the TreeHacks banner.
+The file doesn't need to be updated for the hackpack, but
+making it look stylish can be a cool extension.
+-->
+
+<!DOCTYPE html>
+<html>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 10px;
+  color: white;
+}
+#progressbar {
+  background-color: rgb(255, 255, 255);
+  border-radius: 13px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+}
+#progressbar>div {
+  background-color: rgb(255, 83, 83);
+
+   width: 100%;
+
+  height: 20px;
+  border-radius: 10px;
+}
+body {
+  font-family: "Helvetica", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+  position: relative;
+  vertical-align:middle;
+  <!––background-image: url(/icons/CharityChecker-logo-red.png);-->
+  background-size: 100% 100%;
+  min-width: 350px;
+  min-height: 400px;
+}
+img  {
+  float: right;
+}
+p {
+  font-family: "Gill Sans", "Lucida Grande", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  color: rgb(26, 26, 26);
+  display: inline;
+}
+</style >
+<body>
+<img src="/icons/CharityChecker-logo-red.png" alt="CharityChecker logo" width="112" height="67">
+<!--<canvas id="myCanvas" width="600" height="100"></canvas>-->
+<p style="font-size: 11px"><b>Welcome to Charity Checker. </b></p>
+<br>
+<p style="font-size: 11px"><b>We're so glad you want to donate to make a difference!</b></p>
+<br><br style="font-size: 5px">
+<br>
+<p> Here are some quick facts we think you should know about </p>
+<b><p id="Name">:</p></b>
+<br> <br>
+<p> Current CEO is </p>
+<b><p id="CurrCEO"></p></b>
+<br><br>
+
+
+<header>
+    <div id="progressbar">
+        <div></div>
+      </div>
+
+    <h2> cents out of each dollar goes towards your cause</h2>
+  </header>
+<script src="popup.js" ></script>
+</body>
+</html>
