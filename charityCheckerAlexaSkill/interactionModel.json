@@ -1,0 +1,159 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "charity checker",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "MyCharityIsIntent",
+                    "slots": [
+                        {
+                            "name": "Charity",
+                            "type": "LIST_OF_CHARITIES",
+                            "samples": [
+                                "{Charity}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "MyCharityIsIntent I would like to hear about {Charity}",
+                        "MyCharityIsIntent my favorite charity is {Charity}",
+                        "MyCharityIsIntent favorite {Charity}",
+                        "MyCharityIsIntent add {Charity}",
+                        "MyCharityIsIntent {Charity}",
+                        "MyCharityIsIntent my charity is {Charity}"
+                    ]
+                },
+                {
+                    "name": "WhatsMyCharityIntent",
+                    "slots": [],
+                    "samples": [
+                        "WhatsMyCharityIntent what's my favorite charity",
+                        "WhatsMyCharityIntent what is my favorite charity",
+                        "WhatsMyCharityIntent what's my charity",
+                        "WhatsMyCharityIntent what is my charity",
+                        "WhatsMyCharityIntent my charity",
+                        "WhatsMyCharityIntent my favorite charity",
+                        "WhatsMyCharityIntent get my charity",
+                        "WhatsMyCharityIntent get my favorite charity",
+                        "WhatsMyCharityIntent give me my favorite charity",
+                        "WhatsMyCharityIntent give me my charity",
+                        "WhatsMyCharityIntent what my charity is",
+                        "WhatsMyCharityIntent what my favorite charity is",
+                        "WhatsMyCharityIntent yes",
+                        "WhatsMyCharityIntent yup",
+                        "WhatsMyCharityIntent sure",
+                        "WhatsMyCharityIntent yes please"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "LIST_OF_CHARITIES",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "UNICEF"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Plan"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Red Cross"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "The Salvation Army"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Direct Relief"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "MAP International"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Cystic Fibrosis Foundation"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "American Civil Liberties Union Foundation"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "MyCharityIsIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "Charity",
+                            "type": "LIST_OF_CHARITIES",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1329658134289.541997094322"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.579385938662.940172369872",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is your charity"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1329658134289.541997094322",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is your charity"
+                    }
+                ]
+            }
+        ]
+    }
+}
