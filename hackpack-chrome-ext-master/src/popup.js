@@ -10,7 +10,7 @@ var urlToEin = new Map([
     ['itgetsbetter.org', '261906629'],
     ['americares.org', '061008595'],
     ['secure.americares.org', '061008595'],
-    ['unicefusa.org/', '131760110'],
+    ['unicefusa.org', '131760110'],
     ['secure.unicefusa.org', '131760110'],
     ['worldwildlife.org', '521693387'],
     ['support.worldwildlife.org', '521693387'],
