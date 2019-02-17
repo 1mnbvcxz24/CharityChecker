@@ -2,12 +2,16 @@
 // This information is then printed in the HTML/CSS of the browser extension
 
 var data; // The JSON object returned by the API call
+
+// API Call 1
 var charityName;
 var currentCEO, currentCEOName, currentCEOTitle;
 var tagLine, mission, donateEmail, deductible;
 var category, categoryName, categoryImage
-var charityNavigatorURL;
-var ratingsURL, programExpensesRatio;
+var charityNavigatorURL, ratingsURL;
+
+// API Call 2
+var programExpensesRatio;
 var financialRating, performanceMetrics;
 
 // The API allows us to search for a charity by the EIN (a unique Employer Identification Number, assigned by the federal
