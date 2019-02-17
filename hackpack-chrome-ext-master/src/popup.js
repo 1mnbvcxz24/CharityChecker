@@ -8,6 +8,7 @@ var tagLine, mission, donateEmail, deductible;
 var category, categoryName, categoryImage
 var charityNavigatorURL;
 var ratingsURL, programExpensesRatio;
+var financialRating, performanceMetrics;
 
 // The API allows us to search for a charity by the EIN (a unique Employer Identification Number, assigned by the federal
 // goverment). We cannot search by the url, so instead we manually map some donation urls to the EIN of their associated charities.
@@ -35,7 +36,6 @@ var urlToEin = new Map([
     ['cancer.org', '131788491'],
     ['donate3.cancer.org', '131788491'],
   ]);
-
 
   var currUrl;
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
@@ -70,7 +70,7 @@ if (urlToEin.has(currUrl)) {
         // Assume data is not null, since this code only runs if the map contains the current URL domain
         // (Otherwise, set every variable to n/a)
         var data = JSON.parse(Http.responseText);
-        
+
         charityName =          (data.charityName             !== null? data.charityName               :'n/a');
         currentCEO     =       (data.currentCEO              !== null? data.currentCEO                :'n/a');
         if (currentCEO !== 'n/a') {
@@ -114,15 +114,30 @@ if (urlToEin.has(currUrl)) {
             Http2.open("GET", url2);
             Http2.send();
             Http2.onreadystatechange=(e)=> {
+                // data2 should be valid, since ratingsURL is checked before entering this block
                 var data2 = JSON.parse(Http2.responseText);
 
                 // Set variables to JSON data
-
-                // ADD IF STATEMENTS!!!
-                programExpensesRatio =  (data2.financialRating.performanceMetrics.programExpensesRatio !== 
-                    null? data2.financialRating.performanceMetrics.programExpensesRatio :"n/a");
-
+                financialRating = (data2.financialRating !== null ? data2.financialRating : 'n/a');
+                if (financialRating !== 'n/a') {
+                    performanceMetrics = (financialRating.performanceMetrics !== 
+                        null ? financialRating.performanceMetrics : 'n/a');
+                    if (performanceMetrics !== 'n/a') {
+                        programExpensesRatio = (performanceMetrics.programExpensesRatio !==
+                            null? performanceMetrics.programExpensesRatio :"n/a");
+                    }
+                    else {
+                        programExpensesRatio = 'n/a';
+                    }
+                }
+                else {
+                    performanceMetrics = 'n/a';
+                    programExpensesRatio = 'n/a';
+                }
+                
                 // Make sure to print to console in this function (async task)
+                console.log(financialRating);
+                console.log(performanceMetrics);
                 console.log(programExpensesRatio);
             }
         }
