@@ -47,5 +47,20 @@ if (urlToEin.has(currUrl)) {
         document.getElementById("Name").innerHTML = charityName;
         document.getElementById("CurrCEO").innerHTML = currentCEOTitle;
         console.log(charityName, currentCEOTitle, tagLine, mission, donateEmail);
+
+
+        var currUrl;
+        //currUrl = window.location.hostName;
+
+        chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
+          console.log("query");
+           currUrl = tabs[0].url;
+           var domain = currUrl.hostname;
+           console.log("THIS " + domain);
+
+           document.getElementById("WUrl").innerHTML = currUrl;
+           console.log(currUrl);
+         });
     }
 }
+
