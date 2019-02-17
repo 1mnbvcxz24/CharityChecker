@@ -19,18 +19,18 @@ var urlToEin = new Map([
     ['clintonfoundation.org', '311580204'],
     ['bbis.clintonfoundation.org', '311580204'],
     ['freedom424.org', '264320885'],
-    ['freedom424.networkforgood.com', '264320885'],
+    ['networkforgood.com', '264320885'],
     ['savethechildren.org', '060726487'],
     ['support.savethechildren.org', '060726487'],
     ['childrenswish.org', '581642982'],
-    ['donatenow.networkforgood.org', '581642982'],
+    ['', '581642982'],
     ['cancer.org', '131788491'],
     ['donate3.cancer.org', '131788491'],
   ]);
 
 
   var currUrl;
-  //currUrl = window.location.hostName;
+  //currUdonatenow.networkforgood.orgrl = window.location.hostName;
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
      console.log("query");
      currUrl = tabs[0].url;
