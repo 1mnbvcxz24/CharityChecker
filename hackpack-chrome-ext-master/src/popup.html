@@ -32,10 +32,10 @@ header {
   padding: 3px;
 }
 #progressbar>div {
-  background-color: rgb(255, 83, 83);
-    <!--<script type="text/JavaScript"></script>-->
-  <!--width: programExpensesRatio;-->
-  /* Adjust with JavaScript */
+  background-color: rgb(102, 153, 255);
+
+   width: 0%;
+
   height: 20px;
   border-radius: 10px;
 }
@@ -58,26 +58,45 @@ p {
   color: rgb(26, 26, 26);
   display: inline;
 }
+h2{
+  display: inline;
+}
 </style >
 <body>
 <img src="/icons/CharityChecker-logo-red.png" alt="CharityChecker logo" width="112" height="67">
 <!--<canvas id="myCanvas" width="600" height="100"></canvas>-->
 <p style="font-size: 11px"><b>Welcome to Charity Checker. </b></p>
 <br>
-<p style="font-size: 11px"><b>We're so glad you want to donate to make a difference!</b></p>
+<p style="font-size: 11px"><b>We're so glad you want to donate to </br> make a difference!</b></p>
 <br><br style="font-size: 5px">
+<br>
 <p> Here are some quick facts we think you should know about </p>
 <b><p id="Name">:</p></b>
-<br> <br>
+<br>
+<br>
 <p> Current CEO is </p>
-<p id="CurrCEO"></p>
+<b><p id="CurrCEO"></p>
+<p>-</p>
+<p id ="CEOTitle"></p></b>
 <br><br>
+
+
 <header>
     <div id="progressbar">
         <div></div>
       </div>
-    <h2>___ cents out of each dollar goes towards your cause</h2>
+    <h2 id="centsOutOfDollar"></h2>
+    <h2> cents out of each dollar goes towards your cause</h2>
   </header>
 <script src="popup.js" ></script>
+
+</br>
+<p id="missionP"></p>
+<br></br>
+<p id = "taxDeductP"></p
+<br></br>
+<p>Email: </p>
+<b><p id="donateEmailP"></p></b>
+
 </body>
 </html>

@@ -1,13 +1,16 @@
 // Script file that initializes variables to data from Charity Navigator API.
 // This information is then printed in the HTML/CSS of the browser extension
 
-var data; // The JSON object returned by the API call
+
+// API Call 1
 var charityName;
 var currentCEO, currentCEOName, currentCEOTitle;
 var tagLine, mission, donateEmail, deductible;
 var category, categoryName, categoryImage
-var charityNavigatorURL;
-var ratingsURL, programExpensesRatio;
+var charityNavigatorURL, ratingsURL;
+
+// API Call 2
+var programExpensesRatio;
 var financialRating, performanceMetrics;
 
 // The API allows us to search for a charity by the EIN (a unique Employer Identification Number, assigned by the federal
@@ -52,7 +55,8 @@ var urlToEin = new Map([
     ['cancersurvivorsfund.org', '760608215'],
     ['woundedwarriorproject.org', '202370934'],
     ['americanheart.org', '135613797'],
-    ['shrinershospitalsforchildren.org']
+    ['shrinershospitalsforchildren.org', '362193608'],
+    ['charitywater.org', '223936753']
   ]);
 
   var currUrl;
@@ -101,17 +105,23 @@ if (urlToEin.has(currUrl)) {
         }
 
         tagLine =              (data.tagLine                 !== (null || undefined)? data.tagLine                   :'n/a');
+
         mission =              (data.mission                 !== (null || undefined)? data.mission                   :'n/a');
-        donateEmail =          (data.donateEmail             !== (null || undefined)? data.donateEmail               :'n/a');
-        deductible =           (data.deductibility           !== (null || undefined)? data.deductibility             :'n/a');
-        console.log(data.category);
+
+        donateEmail =          (data.generalEmail             !== (null || undefined)? data.generalEmail               :'n/a');
+
+        if(data.irsClassification !== (null || undefined)){
+            deductible =  (data.irsClassification.deductibility   !== (null || undefined)? data.irsClassification.deductibility :'n/a');
+        }else{
+          deductible = 'n/a';
+        }
         category  =            (data.category                !== (null || undefined)? data.category         :'n/a');
         console.log("category is " + category);
         if (category !== 'n/a') {
             console.log("got into category loop");
             categoryName  =        (data.category.categoryName   !== (null || undefined)? data.category.categoryName     :'n/a');
             categoryImage =        (data.category.image          !== (null || undefined)? data.category.image            :'n/a');
-        }else {
+        } else {
             categoryName  = 'n/a';
             categoryImage  = 'n/a';
         }
@@ -120,7 +130,7 @@ if (urlToEin.has(currUrl)) {
         if (data.currentRating !== (null || undefined) && data.currentRating._rapid_links !== (null || undefined) && data.currentRating._rapid_links.related !== undefined) {
             ratingsURL = (data.currentRating._rapid_links.related.href !==
                 undefined? data.currentRating._rapid_links.related.href :'n/a');
-        }else {
+        } else {
             ratingsURL = 'n/a';
         }
 
@@ -138,40 +148,63 @@ if (urlToEin.has(currUrl)) {
                 var data2 = JSON.parse(Http2.responseText);
 
                 // Set variables to JSON data
+                console.log("programExpensesRatio: " + data2.financialRating.performanceMetrics.programExpensesRatio);
                 financialRating = (data2.financialRating !== undefined ? data2.financialRating : 'n/a');
                 if (financialRating !== 'n/a') {
                     performanceMetrics = (financialRating.performanceMetrics !==
                         undefined ? financialRating.performanceMetrics : 'n/a');
                     if (performanceMetrics !== 'n/a') {
-                        programExpensesRatio = (performanceMetrics.programExpensesRatio !==
-                            undefined? performanceMetrics.programExpensesRatio :"n/a");
-                    }
-                    else {
+                        programExpensesRatio = ((performanceMetrics.programExpensesRatio !==
+                            undefined) ? performanceMetrics.programExpensesRatio : "n/a");
+                        console.log('1' + programExpensesRatio)
+                    } else {
                         programExpensesRatio = 'n/a';
+                        console.log('2' + programExpensesRatio)
                     }
-                }
-                else {
+                    console.log('3' + programExpensesRatio)
+                } else {
+                    console.log('4' + programExpensesRatio)
                     performanceMetrics = 'n/a';
                     programExpensesRatio = 'n/a';
+                    console.log('5' + programExpensesRatio)
                 }
 
                 // Make sure to print to console in this function (async task)
-                console.log(financialRating);
-                console.log(performanceMetrics);
-                console.log(programExpensesRatio);
+                console.log("financialRating: " + financialRating);
+                console.log("performanceMetrics: " + performanceMetrics);
+                console.log("programExpensesRatio: " + programExpensesRatio);
+
+                let percent = programExpensesRatio * 100;
+                document.getElementById("centsOutOfDollar").innerHTML = percent;
+                console.log('9' + percent)
+                document.querySelectorAll('#progressbar > div').forEach(e => {
+                    e.setAttribute('style', `width: ${percent}%`)
+                })
             }
         }
 
-        if (programExpensesRatio !== 'n/a') {
-          programExpensesRatio = parseInt(programExpensesRatio)*100;
+        console.log('6' + programExpensesRatio)
+       if (programExpensesRatio !== 'n/a') {
+         console.log("ratio: " + programExpensesRatio);
+          programExpensesRatio = parseInt(programExpensesRatio);
+          console.log("new ratio: " + programExpensesRatio);
         }
+
+    console.log('7' + programExpensesRatio)
         // Set HTML objects to variables values
         //document.getElementById("domainName").innerHTML = currUrl;
         document.getElementById("Name").innerHTML = charityName;
         //document.getElementById("programRatio").innerHTML = programExpensesRatio;
+        document.getElementById("Name").innerHTML = charityName;
 
+        console.log('8' + programExpensesRatio);
         document.getElementById("CurrCEO").innerHTML = currentCEOName;
+        document.getElementById("CEOTitle").innerHTML = currentCEOTitle;
 
+        document.getElementById("taxDeductP").innerHTML = deductible;
+        document.getElementById("donateEmailP").innerHTML = donateEmail;
+
+        document.getElementById("missionP").innerHTML = mission.substr(0, 200) + ". . .";
         // Print variable values to console for testing
         console.log(charityName, currentCEOName, currentCEOTitle, tagLine, mission, donateEmail, deductible, categoryName, categoryImage);
         console.log(charityNavigatorURL);
