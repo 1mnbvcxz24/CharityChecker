@@ -15,14 +15,40 @@ making it look stylish can be a cool extension.
 <html>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 10px;
+  color: white;
+}
+#progressbar {
+  background-color: rgb(255, 255, 255);
+  border-radius: 13px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+}
+
+#progressbar>div {
+  background-color: rgb(255, 83, 83);
+  width: 100%;
+  /* Adjust with JavaScript */
+  height: 20px;
+  border-radius: 10px;
+}
+
 body {
-  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-family: "Helvetica", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
   position: relative;
   vertical-align:middle;
   <!––background-image: url(/icons/CharityChecker-logo-red.png);-->
   background-size: 100% 100%;
-  min-width: 300px;
+  min-width: 350px;
   min-height: 400px;
 
 }
@@ -30,9 +56,9 @@ img  {
   float: right;
 }
 p {
-  font-family: verdana;
-  font-size: 20px;
-  //color: white;
+  font-family: "Gill Sans", "Lucida Grande", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  color: rgb(26, 26, 26);
   display: inline;
 }
 
@@ -45,15 +71,21 @@ p {
 <!--<canvas id="myCanvas" width="600" height="100"></canvas>-->
 
 <p> Charity Name is </p>
-<p id="Name"></p>
+<b><p id="Name"></p></b>
 <br> <br>
 <p> Current CEO is </p>
 <p id="CurrCEO"></p>
-<br>
+<br><br>
+
+<header>
+    <div id="progressbar">
+        <div></div>
+      </div>
+    <h2>___ cents out of each dollar goes towards your cause</h2>
+  </header>
 
 <script src="popup.js" ></script>
 
 
 </body>
 </html>
-
