@@ -1,6 +1,7 @@
 // Script file that gets data from API and initializes variables to print in browser extension
 var data;
-var charityName, currentCEOTitle, tagLine, mission, donateEmail;
+var charityName, currentCEOTitle, tagLine, mission, donateEmail, deductible,
+    categoryName, categoryImage, charityNavigatorURL;
 var urlToEin = new Map([
     ['www.unitedway.org', '131635294'],
     ['www.doctorswithoutborders.org', '133433452'],
@@ -38,16 +39,19 @@ if (urlToEin.has(currUrl)) {
 
     Http.onreadystatechange=(e)=> {
         var data = JSON.parse(Http.responseText);
-        charityName =     (data.charityName      != null? data.charityName      :"n/a");
-        currentCEOTitle = (data.currentCEO.title != null? data.currentCEO.title :"n/a");
-        tagLine =         (data.tagLine          != null? data.tagLine          :"n/a");
-        mission =         (data.mission          != null? data.mission          :"n/a");
-        donateEmail =     (data.donateEmail      != null? data.donateEmail      :"n/a");
+        charityName =         (data.charityName             != null? data.charityName               :"n/a");
+        currentCEOTitle =     (data.currentCEO.title        != null? data.currentCEO.title          :"n/a");
+        tagLine =             (data.tagLine                 != null? data.tagLine                   :"n/a");
+        mission =             (data.mission                 != null? data.mission                   :"n/a");
+        donateEmail =         (data.donateEmail             != null? data.donateEmail               :"n/a");
+        deductible =          (data.deductibility           != null? data.deductibility             :"n/a");
+        categoryName  =       (data.category.categoryName   != null? data.category.categoryName     :"n/a");
+        categoryImage =       (data.category.image          != null? data.category.image            :"n/a");
+        charityNavigatorURL = (data.charityNavigatorURL != null? data.charityNavigatorURL       :"n/a");
 
         document.getElementById("Name").innerHTML = charityName;
         document.getElementById("CurrCEO").innerHTML = currentCEOTitle;
-        console.log(charityName, currentCEOTitle, tagLine, mission, donateEmail);
-
+        console.log(charityName, currentCEOTitle, tagLine, mission, donateEmail, deductible, categoryName, categoryImage, charityNavigatorURL);
 
         var currUrl;
         //currUrl = window.location.hostName;
