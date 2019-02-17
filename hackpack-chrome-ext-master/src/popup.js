@@ -24,7 +24,7 @@ var urlToEin = new Map([
     ['secure.unicefusa.org', '131760110'],
     ['worldwildlife.org', '521693387'],
     ['support.worldwildlife.org', '521693387'],
-    ['greenpeace.org', '521541501'],
+    ['greenpeace.org', '953313195'],
     ['engage.us.greenpeace.org', '521541501'],
     ['clintonfoundation.org', '311580204'],
     ['bbis.clintonfoundation.org', '311580204'],
@@ -35,6 +35,24 @@ var urlToEin = new Map([
     ['childrenswish.org', '581642982'],
     ['cancer.org', '131788491'],
     ['donate3.cancer.org', '131788491'],
+    ['redcross.org', '530196605'],
+    ['salvationarmyusa.org', '222406433'],
+    ['goodwill.org', '530196517'],
+    ['nature.org', '530242652'],
+    ['nrdc.org', '132654926'],
+    ['stjude.org', '351044585'],
+    ['dav.org', '521521276'],
+    ['aspca.org', '131623829'],
+    ['feedingamerica.org', '363673599'],
+    ['cityofhope.org', '953435919'],
+    ['worldvision.org', '951922279'],
+    ['directrelief.org', '951831116'],
+    ['crs.org', '135563422'],
+    ['womenssportsfoundation.org', '237380557'],
+    ['cancersurvivorsfund.org', '760608215'],
+    ['woundedwarriorproject.org', '202370934'],
+    ['americanheart.org', '135613797'],
+    ['shrinershospitalsforchildren.org']
   ]);
 
   var currUrl;
@@ -50,16 +68,16 @@ var urlToEin = new Map([
    console.log("starting if statement");
 if (urlToEin.has(currUrl)) {
     var ein = urlToEin.get(currUrl);
-    
+
     // Note: app_id and app_key are limited to max 1000 requests/day for free tier, and expire after our 30 day free trial.
     // These values are for Trishiet Ray's account on February 16, 2019.
     var app_id = '0db87935';
     var app_key = '19ae9ac1bd6fc3c9cbbea2c403f4d14e';
-    
+
     // Form the API request url using the EIN, as well as our unique app_id and app_key.
     var url='https://api.data.charitynavigator.org/v2/Organizations/' + ein +
         '?app_id=' + app_id + '&app_key=' + app_key;
-    
+
     // Perform a GET request for the URL
     const Http = new XMLHttpRequest();
     Http.open("GET", url);
@@ -71,36 +89,38 @@ if (urlToEin.has(currUrl)) {
         // (Otherwise, set every variable to n/a)
         var data = JSON.parse(Http.responseText);
 
-        charityName =          (data.charityName             !== null? data.charityName               :'n/a');
-        currentCEO     =       (data.currentCEO              !== null? data.currentCEO                :'n/a');
+        charityName =          (data.charityName             !== (null || undefined)? data.charityName               :'n/a');
+        currentCEO     =       (data.currentCEO              !== (null || undefined)? data.currentCEO                :'n/a');
         if (currentCEO !== 'n/a') {
-            currentCEOName =       (data.currentCEO.name         !== null? data.currentCEO.name       :'n/a');
-            currentCEOTitle =      (data.currentCEO.title        !== null? data.currentCEO.title      :'n/a');
+            currentCEOName =       (data.currentCEO.name         !== (null || undefined)? data.currentCEO.name       :'n/a');
+            currentCEOTitle =      (data.currentCEO.title        !== (null || undefined)? data.currentCEO.title      :'n/a');
         }
         else {
             currentCEOName = 'n/a';
             currentCEOTitle = 'n/a';
         }
 
-        tagLine =              (data.tagLine                 !== null? data.tagLine                   :'n/a');
-        mission =              (data.mission                 !== null? data.mission                   :'n/a');
-        donateEmail =          (data.donateEmail             !== null? data.donateEmail               :'n/a');
-        deductible =           (data.deductibility           !== null? data.deductibility             :'n/a');
-        category  =            (data.category.category       !== null? data.category.category         :'n/a');
+        tagLine =              (data.tagLine                 !== (null || undefined)? data.tagLine                   :'n/a');
+        mission =              (data.mission                 !== (null || undefined)? data.mission                   :'n/a');
+        donateEmail =          (data.donateEmail             !== (null || undefined)? data.donateEmail               :'n/a');
+        deductible =           (data.deductibility           !== (null || undefined)? data.deductibility             :'n/a');
+        console.log(data.category);
+        category  =            (data.category                !== (null || undefined)? data.category         :'n/a');
+        console.log("category is " + category);
         if (category !== 'n/a') {
-            categoryName  =        (data.category.categoryName   !== null? data.category.categoryName     :'n/a');
-            categoryImage =        (data.category.image          !== null? data.category.image            :'n/a');
-        }
-        else {
+            console.log("got into category loop");
+            categoryName  =        (data.category.categoryName   !== (null || undefined)? data.category.categoryName     :'n/a');
+            categoryImage =        (data.category.image          !== (null || undefined)? data.category.image            :'n/a');
+        }else {
             categoryName  = 'n/a';
             categoryImage  = 'n/a';
         }
-        charityNavigatorURL =  (data.charityNavigatorURL !== null? data.charityNavigatorURL       :'n/a');
-        if (data.currentRating !== null && data.currentRating._rapid_links !== null && data.currentRating._rapid_links.related !== null) {
-            ratingsURL = (data.currentRating._rapid_links.related.href !== 
-                null? data.currentRating._rapid_links.related.href :'n/a');
-        }
-        else {
+
+        charityNavigatorURL =  (data.charityNavigatorURL !== (null || undefined)? data.charityNavigatorURL       :'n/a');
+        if (data.currentRating !== (null || undefined) && data.currentRating._rapid_links !== (null || undefined) && data.currentRating._rapid_links.related !== undefined) {
+            ratingsURL = (data.currentRating._rapid_links.related.href !==
+                undefined? data.currentRating._rapid_links.related.href :'n/a');
+        }else {
             ratingsURL = 'n/a';
         }
 
@@ -118,13 +138,13 @@ if (urlToEin.has(currUrl)) {
                 var data2 = JSON.parse(Http2.responseText);
 
                 // Set variables to JSON data
-                financialRating = (data2.financialRating !== null ? data2.financialRating : 'n/a');
+                financialRating = (data2.financialRating !== undefined ? data2.financialRating : 'n/a');
                 if (financialRating !== 'n/a') {
-                    performanceMetrics = (financialRating.performanceMetrics !== 
-                        null ? financialRating.performanceMetrics : 'n/a');
+                    performanceMetrics = (financialRating.performanceMetrics !==
+                        undefined ? financialRating.performanceMetrics : 'n/a');
                     if (performanceMetrics !== 'n/a') {
                         programExpensesRatio = (performanceMetrics.programExpensesRatio !==
-                            null? performanceMetrics.programExpensesRatio :"n/a");
+                            undefined? performanceMetrics.programExpensesRatio :"n/a");
                     }
                     else {
                         programExpensesRatio = 'n/a';
@@ -134,7 +154,7 @@ if (urlToEin.has(currUrl)) {
                     performanceMetrics = 'n/a';
                     programExpensesRatio = 'n/a';
                 }
-                
+
                 // Make sure to print to console in this function (async task)
                 console.log(financialRating);
                 console.log(performanceMetrics);
@@ -142,10 +162,15 @@ if (urlToEin.has(currUrl)) {
             }
         }
 
+        if (programExpensesRatio !== 'n/a') {
+          programExpensesRatio = parseInt(programExpensesRatio)*100;
+        }
         // Set HTML objects to variables values
-        document.getElementById("domainName").innerHTML = currUrl;
+        //document.getElementById("domainName").innerHTML = currUrl;
         document.getElementById("Name").innerHTML = charityName;
-        document.getElementById("CurrCEO").innerHTML = currentCEOTitle;
+        //document.getElementById("programRatio").innerHTML = programExpensesRatio;
+
+        document.getElementById("CurrCEO").innerHTML = currentCEOName;
 
         // Print variable values to console for testing
         console.log(charityName, currentCEOName, currentCEOTitle, tagLine, mission, donateEmail, deductible, categoryName, categoryImage);
@@ -192,4 +217,3 @@ function extractHostname(url) {
 
     return hostname;
 }
-

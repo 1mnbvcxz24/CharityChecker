@@ -6,7 +6,6 @@ which is the window that pops up when you click the icon
 in the upper right corner of the Chrome window. Update this
 HTML file to change the layout of the content if you'd like!
 Currently, it is the TreeHacks banner.
-
 The file doesn't need to be updated for the hackpack, but
 making it look stylish can be a cool extension.
 -->
@@ -32,15 +31,14 @@ header {
   /* (height of inner div) / 2 + padding */
   padding: 3px;
 }
-
 #progressbar>div {
   background-color: rgb(255, 83, 83);
-  width: 100%;
+    <!--<script type="text/JavaScript"></script>-->
+  <!--width: programExpensesRatio;-->
   /* Adjust with JavaScript */
   height: 20px;
   border-radius: 10px;
 }
-
 body {
   font-family: "Helvetica", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
@@ -50,7 +48,6 @@ body {
   background-size: 100% 100%;
   min-width: 350px;
   min-height: 400px;
-
 }
 img  {
   float: right;
@@ -61,15 +58,10 @@ p {
   color: rgb(26, 26, 26);
   display: inline;
 }
-
 </style >
-
 <body>
-
 <img src="/icons/CharityChecker-logo-red.png" alt="CharityChecker logo" width="112" height="67">
-
 <!--<canvas id="myCanvas" width="600" height="100"></canvas>-->
-
 <p style="font-size: 11px"><b>Welcome to Charity Checker. </b></p>
 <br>
 <p style="font-size: 11px"><b>We're so glad you want to donate to make a difference!</b></p>
@@ -80,16 +72,12 @@ p {
 <p> Current CEO is </p>
 <p id="CurrCEO"></p>
 <br><br>
-
 <header>
     <div id="progressbar">
         <div></div>
       </div>
     <h2>___ cents out of each dollar goes towards your cause</h2>
   </header>
-
 <script src="popup.js" ></script>
-
-
 </body>
 </html>
