@@ -1,8 +1,17 @@
-// Script file that gets data from API and initializes variables to print in browser extension
+// Script file that initializes variables to data from Charity Navigator API.
+// This information is then printed in the HTML/CSS of the browser extension
 
-var data;
-var charityName, currentCEOTitle, tagLine, mission, donateEmail, deductible,
-    categoryName, categoryImage, charityNavigatorURL;
+var data; // The JSON object returned by the API call
+var charityName;
+var currentCEO, currentCEOName, currentCEOTitle;
+var tagLine, mission, donateEmail, deductible;
+var category, categoryName, categoryImage
+var charityNavigatorURL;
+var ratingsURL, programExpensesRatio;
+
+// The API allows us to search for a charity by the EIN (a unique Employer Identification Number, assigned by the federal
+// goverment). We cannot search by the url, so instead we manually map some donation urls to the EIN of their associated charities.
+// This database is (intentionally) limited to a few domains, for proof-of-concept.
 var urlToEin = new Map([
     ['unitedway.org', '131635294'],
     ['doctorswithoutborders.org', '133433452'],
@@ -23,14 +32,12 @@ var urlToEin = new Map([
     ['savethechildren.org', '060726487'],
     ['support.savethechildren.org', '060726487'],
     ['childrenswish.org', '581642982'],
-    ['', '581642982'],
     ['cancer.org', '131788491'],
     ['donate3.cancer.org', '131788491'],
   ]);
 
 
   var currUrl;
-  //currUdonatenow.networkforgood.orgrl = window.location.hostName;
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
      console.log("query");
      currUrl = tabs[0].url;
@@ -42,32 +49,92 @@ var urlToEin = new Map([
    //currUrl = 'www.doctorswithoutborders.org';
    console.log("starting if statement");
 if (urlToEin.has(currUrl)) {
-    console.log("Has currUrl");
     var ein = urlToEin.get(currUrl);
-    console.log("ein is " + ein);
-    var url='https://api.data.charitynavigator.org/v2/Organizations/' + ein + '?app_id=0db87935&app_key=19ae9ac1bd6fc3c9cbbea2c403f4d14e';
-
+    
+    // Note: app_id and app_key are limited to max 1000 requests/day for free tier, and expire after our 30 day free trial.
+    // These values are for Trishiet Ray's account on February 16, 2019.
+    var app_id = '0db87935';
+    var app_key = '19ae9ac1bd6fc3c9cbbea2c403f4d14e';
+    
+    // Form the API request url using the EIN, as well as our unique app_id and app_key.
+    var url='https://api.data.charitynavigator.org/v2/Organizations/' + ein +
+        '?app_id=' + app_id + '&app_key=' + app_key;
+    
+    // Perform a GET request for the URL
     const Http = new XMLHttpRequest();
     Http.open("GET", url);
     Http.send();
 
     Http.onreadystatechange=(e)=> {
+        // Set variables to data from JSON file
+        // Assume data is not null, since this code only runs if the map contains the current URL domain
+        // (Otherwise, set every variable to n/a)
         var data = JSON.parse(Http.responseText);
-        charityName =   (data.charityName  != null? data.charityName   :"n/a");
-        currentCEOTitle = (data.currentCEO.title != null? data.currentCEO.title :"n/a");
-        tagLine =         (data.tagLine  != null? data.tagLine :"n/a");
-        mission = (data.mission   != null? data.mission :"n/a");
-        donateEmail = (data.donateEmail!= null? data.donateEmail :"n/a");
-        deductible =  (data.deductibility!= null? data.deductibility :"n/a");
-        //categoryName  = (data.category.categoryName   != null? data.category.categoryName :"n/a");
-        //categoryImage = (data.category.image != null? data.category.image   :"n/a");
-        charityNavigatorURL = (data.charityNavigatorURL != null? data.charityNavigatorURL:"n/a");
+        
+        charityName =          (data.charityName             !== null? data.charityName               :'n/a');
+        currentCEO     =       (data.currentCEO              !== null? data.currentCEO                :'n/a');
+        if (currentCEO !== 'n/a') {
+            currentCEOName =       (data.currentCEO.name         !== null? data.currentCEO.name       :'n/a');
+            currentCEOTitle =      (data.currentCEO.title        !== null? data.currentCEO.title      :'n/a');
+        }
+        else {
+            currentCEOName = 'n/a';
+            currentCEOTitle = 'n/a';
+        }
 
+        tagLine =              (data.tagLine                 !== null? data.tagLine                   :'n/a');
+        mission =              (data.mission                 !== null? data.mission                   :'n/a');
+        donateEmail =          (data.donateEmail             !== null? data.donateEmail               :'n/a');
+        deductible =           (data.deductibility           !== null? data.deductibility             :'n/a');
+        category  =            (data.category.category       !== null? data.category.category         :'n/a');
+        if (category !== 'n/a') {
+            categoryName  =        (data.category.categoryName   !== null? data.category.categoryName     :'n/a');
+            categoryImage =        (data.category.image          !== null? data.category.image            :'n/a');
+        }
+        else {
+            categoryName  = 'n/a';
+            categoryImage  = 'n/a';
+        }
+        charityNavigatorURL =  (data.charityNavigatorURL !== null? data.charityNavigatorURL       :'n/a');
+        if (data.currentRating !== null && data.currentRating._rapid_links !== null && data.currentRating._rapid_links.related !== null) {
+            ratingsURL = (data.currentRating._rapid_links.related.href !== 
+                null? data.currentRating._rapid_links.related.href :'n/a');
+        }
+        else {
+            ratingsURL = 'n/a';
+        }
+
+        // Form new API request url for the Financial Ratings object
+        if (ratingsURL !== 'n/a') {
+            var url2 = ratingsURL + '?app_id=' + app_id + '&app_key=' + app_key;
+
+            // Make a request for the Rating object, which contains additional info about the Financial Rating
+            // and Accounting Rating
+            const Http2 = new XMLHttpRequest();
+            Http2.open("GET", url2);
+            Http2.send();
+            Http2.onreadystatechange=(e)=> {
+                var data2 = JSON.parse(Http2.responseText);
+
+                // Set variables to JSON data
+
+                // ADD IF STATEMENTS!!!
+                programExpensesRatio =  (data2.financialRating.performanceMetrics.programExpensesRatio !== 
+                    null? data2.financialRating.performanceMetrics.programExpensesRatio :"n/a");
+
+                // Make sure to print to console in this function (async task)
+                console.log(programExpensesRatio);
+            }
+        }
+
+        // Set HTML objects to variables values
         document.getElementById("domainName").innerHTML = currUrl;
         document.getElementById("Name").innerHTML = charityName;
         document.getElementById("CurrCEO").innerHTML = currentCEOTitle;
 
-
+        // Print variable values to console for testing
+        console.log(charityName, currentCEOName, currentCEOTitle, tagLine, mission, donateEmail, deductible, categoryName, categoryImage);
+        console.log(charityNavigatorURL);
     }
 }
    });
