@@ -1,0 +1,59 @@
+<!--
+File: popup.html
+=========================
+This file contains the HTML visible in the browser action,
+which is the window that pops up when you click the icon
+in the upper right corner of the Chrome window. Update this
+HTML file to change the layout of the content if you'd like!
+Currently, it is the TreeHacks banner.
+
+The file doesn't need to be updated for the hackpack, but
+making it look stylish can be a cool extension.
+-->
+
+<!DOCTYPE html>
+<html>
+
+<style>
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+  position: relative;
+  vertical-align:middle;
+  <!––background-image: url(/icons/CharityChecker-logo-red.png);-->
+  background-size: 100% 100%;
+  min-width: 300px;
+  min-height: 400px;
+
+}
+img  {
+  float: right;
+}
+p {
+  font-family: verdana;
+  font-size: 20px;
+  //color: white;
+  display: inline;
+}
+
+</style >
+
+<body>
+
+<img src="/icons/CharityChecker-logo-red.png" alt="CharityChecker logo" width="112" height="67">
+
+<!--<canvas id="myCanvas" width="600" height="100"></canvas>-->
+
+<p> Charity Name is </p>
+<p id="Name"></p>
+<br> <br>
+<p> Current CEO is </p>
+<p id="CurrCEO"></p>
+<br>
+
+<script src="popup.js" ></script>
+
+
+</body>
+</html>
+
